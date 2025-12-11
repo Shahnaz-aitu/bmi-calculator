@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #e7f0ff;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+
+.container, .result-box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    margin-top: 15px;
+}
+
+.Underweight {
+    background-color: #b3d9ff;
+}
+
+.Normal-weight {
+    background-color: #b6ffb3;
+}
+
+.Overweight {
+    background-color: #ffe680;
+}
+
+.Obese {
+    background-color: #ff9999;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: white;
+    background: #444;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
