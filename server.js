@@ -6,44 +6,40 @@ const app = express();
 const PORT = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));  
+app.use(express.static("public"));
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "views", "index.html"));
+    res.render("index");
 });
 
 app.post("/calculate-bmi", (req, res) => {
-    const weight = parseFloat(req.body.weight);
-    const height = parseFloat(req.body.height);
+    const weight = Number(req.body.weight);
+    const height = Number(req.body.height);
 
-    if (weight <= 0 || height <= 0 || isNaN(weight) || isNaN(height)) {
-        return res.send("<h1>Invalid input! Weight and height must be positive numbers.</h1>");
+    if (!weight || !height || weight <= 0 || height <= 0) {
+        return res.send("Invalid input");
     }
 
-    const heightM = height / 100; 
-    const bmi = weight / (heightM * heightM);
-    let category = "";
+    const heightM = height / 100;
+    const bmiValue = weight / (heightM * heightM);
+    const bmi = bmiValue.toFixed(2);
 
-    if (bmi < 18.5) category = "Underweight";
-    else if (bmi < 24.9) category = "Normal weight";
-    else if (bmi < 29.9) category = "Overweight";
+    let category;
+    if (bmiValue < 18.5) category = "Underweight";
+    else if (bmiValue < 24.9) category = "Normal weight";
+    else if (bmiValue < 29.9) category = "Overweight";
     else category = "Obese";
 
-    res.send(`
-        <html>
-            <head>
-                <link rel="stylesheet" href="/style.css">
-            </head>
-            <body class="${category.replace(" ", "-")}">
-                <div class="result-box">
-                    <h1>Your BMI Result</h1>
-                    <p><strong>BMI:</strong> ${bmi.toFixed(2)}</p>
-                    <p class="category"><strong>Category:</strong> ${category}</p>
-                    <a class="back-btn" href="/">Back</a>
-                </div>
-            </body>
-        </html>
-    `);
+    const categoryClass = category.replace(" ", "-");
+
+    res.render("result", {
+        bmi,
+        category,
+        categoryClass
+    });
 });
 
 app.listen(PORT, () => {
